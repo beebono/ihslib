@@ -70,7 +70,7 @@ static void ChannelAudioInit(IHS_SessionChannel *channel, const void *config) {
     audioCh->config.channels = message->channels;
     audioCh->config.frequency = message->frequency;
     audioCh->config.codec = (IHS_StreamAudioCodec) message->codec;
-    if (message->has_codec_data) {
+    if (message->has_codec_data && message->codec_data.len > 0 && message->codec_data.data != NULL) {
         audioCh->config.codecDataLen = message->codec_data.len;
         audioCh->config.codecData = malloc(message->codec_data.len);
         memcpy(audioCh->config.codecData, message->codec_data.data, message->codec_data.len);

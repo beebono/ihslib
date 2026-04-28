@@ -1,0 +1,5 @@
+#pragma once
+
+#define IHS_HID_SDL_TARGET_MAJOR 2
+#define IHS_HID_SDL_TARGET_MINOR 33
+#define IHS_HID_SDL_TARGET_PATCH 0

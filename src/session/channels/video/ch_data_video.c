@@ -132,7 +132,7 @@ static void ChannelVideoInit(IHS_SessionChannel *channel, const void *config) {
     videoCh->config.width = message->width;
     videoCh->config.height = message->height;
     videoCh->config.codec = (IHS_StreamVideoCodec) message->codec;
-    if (message->has_codec_data) {
+    if (message->has_codec_data && message->codec_data.len > 0 && message->codec_data.data != NULL) {
         videoCh->config.codecDataLen = message->codec_data.len;
         videoCh->config.codecData = malloc(videoCh->config.codecDataLen);
         memcpy(videoCh->config.codecData, message->codec_data.data, message->codec_data.len);

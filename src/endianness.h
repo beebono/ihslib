@@ -34,22 +34,22 @@
 #include <memory.h>
 
 inline static size_t IHS_WriteUInt16LE(uint8_t *out, uint16_t value) {
-    *(uint16_t *) out = value;
+    memcpy(out, &value, sizeof(uint16_t));
     return sizeof(uint16_t);
 }
 
 inline static size_t IHS_WriteSInt16LE(uint8_t *out, int16_t value) {
-    *(int16_t *) out = value;
+    memcpy(out, &value, sizeof(int16_t));
     return sizeof(int16_t);
 }
 
 inline static size_t IHS_WriteUInt32LE(uint8_t *out, uint32_t value) {
-    *(uint32_t *) out = value;
+    memcpy(out, &value, sizeof(uint32_t));
     return sizeof(uint32_t);
 }
 
 inline static size_t IHS_WriteUInt64LE(uint8_t *out, uint64_t value) {
-    *(uint64_t *) out = value;
+    memcpy(out, &value, sizeof(uint64_t));
     return sizeof(uint64_t);
 }
 
