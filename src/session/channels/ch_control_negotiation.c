@@ -65,6 +65,7 @@ static void OnNegotiationInit(IHS_SessionChannel *channel, const CNegotiationIni
     IHS_SessionConfig ihsConf = {
             .enableAudio = true,
             .enableHevc = false,
+            .maxBitrateKbps = 0,
     };
 
     IHS_Session *session = channel->session;
@@ -136,7 +137,9 @@ static void OnNegotiationInit(IHS_SessionChannel *channel, const CNegotiationIni
     PROTOBUF_C_SET_VALUE(clientConfig, maximum_framerate_numerator, 5994);
     PROTOBUF_C_SET_VALUE(clientConfig, maximum_framerate_denominator, 100);
     PROTOBUF_C_SET_VALUE(clientConfig, quality, k_EStreamQualityBalanced);
-    PROTOBUF_C_SET_VALUE(clientConfig, maximum_bitrate_kbps, 30000);
+    const uint32_t negotiatedBitrate = ihsConf.maxBitrateKbps != 0 ? ihsConf.maxBitrateKbps : 30000;
+    const uint32_t negotiatedBurst = negotiatedBitrate * 3;
+    PROTOBUF_C_SET_VALUE(clientConfig, maximum_bitrate_kbps, (int32_t) negotiatedBitrate);
     if (ihsConf.enableHevc) {
         PROTOBUF_C_SET_VALUE(clientConfig, enable_video_hevc, true);
     }
@@ -153,8 +156,8 @@ static void OnNegotiationInit(IHS_SessionChannel *channel, const CNegotiationIni
                              "\t\"VideoDisplayX\"\t\"1920\"\n\t\"VideoDisplayY\"\t\"1080\"\n"
                              "\t\"VideoDisplayNameID\"\t\"JN-MD133BFHDR\"\n}\n";
     PROTOBUF_C_SET_VALUE(clientCaps, system_can_suspend, true);
-    PROTOBUF_C_SET_VALUE(clientCaps, maximum_decode_bitrate_kbps, 30000);
-    PROTOBUF_C_SET_VALUE(clientCaps, maximum_burst_bitrate_kbps, 90000);
+    PROTOBUF_C_SET_VALUE(clientCaps, maximum_decode_bitrate_kbps, (int32_t) negotiatedBitrate);
+    PROTOBUF_C_SET_VALUE(clientCaps, maximum_burst_bitrate_kbps, (int32_t) negotiatedBurst);
     if (ihsConf.enableHevc) {
         PROTOBUF_C_SET_VALUE(clientCaps, supports_video_hevc, true);
     }

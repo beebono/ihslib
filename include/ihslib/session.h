@@ -43,6 +43,7 @@ typedef struct IHS_SessionInfo {
 typedef struct IHS_SessionConfig {
     bool enableAudio;
     bool enableHevc;
+    uint32_t maxBitrateKbps;
 } IHS_SessionConfig;
 
 typedef struct IHS_StreamSessionCallbacks {
