@@ -66,6 +66,12 @@ static void OnNegotiationInit(IHS_SessionChannel *channel, const CNegotiationIni
             .enableAudio = true,
             .enableHevc = false,
             .maxBitrateKbps = 0,
+            .quality = k_EStreamQualityBalanced,
+            .audioChannels = 2,
+            .videoWidth = 1920,
+            .videoHeight = 1080,
+            .maxFramerateNumerator = 5994,
+            .maxFramerateDenominator = 100,
     };
 
     IHS_Session *session = channel->session;
@@ -112,10 +118,10 @@ static void OnNegotiationInit(IHS_SessionChannel *channel, const CNegotiationIni
     config.selected_video_codec = videoCodec;
 
     CStreamVideoMode availableVideoMode = CSTREAM_VIDEO_MODE__INIT;
-    availableVideoMode.width = 1920;
-    availableVideoMode.height = 1080;
-    PROTOBUF_C_SET_VALUE(availableVideoMode, refresh_rate_numerator, 5994);
-    PROTOBUF_C_SET_VALUE(availableVideoMode, refresh_rate_denominator, 100);
+    availableVideoMode.width = ihsConf.videoWidth;
+    availableVideoMode.height = ihsConf.videoHeight;
+    PROTOBUF_C_SET_VALUE(availableVideoMode, refresh_rate_numerator, ihsConf.maxFramerateNumerator);
+    PROTOBUF_C_SET_VALUE(availableVideoMode, refresh_rate_denominator, ihsConf.maxFramerateDenominator);
 
     CStreamVideoMode *availableVideoModes[] = {&availableVideoMode};
     config.n_available_video_modes = 1;
@@ -130,13 +136,13 @@ static void OnNegotiationInit(IHS_SessionChannel *channel, const CNegotiationIni
     PROTOBUF_C_SET_VALUE(clientConfig, enable_hardware_decoding, true);
     PROTOBUF_C_SET_VALUE(clientConfig, enable_performance_overlay, true);
     if (ihsConf.enableAudio) {
-        PROTOBUF_C_SET_VALUE(clientConfig, audio_channels, 2);
+        PROTOBUF_C_SET_VALUE(clientConfig, audio_channels, ihsConf.audioChannels);
         PROTOBUF_C_SET_VALUE(clientConfig, enable_audio_streaming, true);
     }
     PROTOBUF_C_SET_VALUE(clientConfig, enable_video_streaming, true);
-    PROTOBUF_C_SET_VALUE(clientConfig, maximum_framerate_numerator, 5994);
-    PROTOBUF_C_SET_VALUE(clientConfig, maximum_framerate_denominator, 100);
-    PROTOBUF_C_SET_VALUE(clientConfig, quality, k_EStreamQualityBalanced);
+    PROTOBUF_C_SET_VALUE(clientConfig, maximum_framerate_numerator, ihsConf.maxFramerateNumerator);
+    PROTOBUF_C_SET_VALUE(clientConfig, maximum_framerate_denominator, ihsConf.maxFramerateDenominator);
+    PROTOBUF_C_SET_VALUE(clientConfig, quality, ihsConf.quality ? ihsConf.quality : k_EStreamQualityBalanced);
     const uint32_t negotiatedBitrate = ihsConf.maxBitrateKbps != 0 ? ihsConf.maxBitrateKbps : 30000;
     const uint32_t negotiatedBurst = negotiatedBitrate * 3;
     PROTOBUF_C_SET_VALUE(clientConfig, maximum_bitrate_kbps, (int32_t) negotiatedBitrate);
