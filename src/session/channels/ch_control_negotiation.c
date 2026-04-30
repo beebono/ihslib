@@ -131,8 +131,8 @@ static void OnNegotiationInit(IHS_SessionChannel *channel, const CNegotiationIni
 
     CStreamingClientConfig clientConfig = CSTREAMING_CLIENT_CONFIG__INIT;
 
-    PROTOBUF_C_SET_VALUE(clientConfig, maximum_resolution_x, 0);
-    PROTOBUF_C_SET_VALUE(clientConfig, maximum_resolution_y, 0);
+    PROTOBUF_C_SET_VALUE(clientConfig, maximum_resolution_x, ihsConf.videoWidth);
+    PROTOBUF_C_SET_VALUE(clientConfig, maximum_resolution_y, ihsConf.videoHeight);
     PROTOBUF_C_SET_VALUE(clientConfig, enable_hardware_decoding, true);
     PROTOBUF_C_SET_VALUE(clientConfig, enable_performance_overlay, true);
     if (ihsConf.enableAudio) {
