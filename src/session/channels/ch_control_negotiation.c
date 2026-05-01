@@ -142,8 +142,8 @@ static void OnNegotiationInit(IHS_SessionChannel *channel, const CNegotiationIni
     PROTOBUF_C_SET_VALUE(clientConfig, enable_video_streaming, true);
     PROTOBUF_C_SET_VALUE(clientConfig, maximum_framerate_numerator, ihsConf.maxFramerateNumerator);
     PROTOBUF_C_SET_VALUE(clientConfig, maximum_framerate_denominator, ihsConf.maxFramerateDenominator);
-    PROTOBUF_C_SET_VALUE(clientConfig, quality, ihsConf.quality ? ihsConf.quality : k_EStreamQualityBalanced);
-    const uint32_t negotiatedBitrate = ihsConf.maxBitrateKbps != 0 ? ihsConf.maxBitrateKbps : 30000;
+    PROTOBUF_C_SET_VALUE(clientConfig, quality, ihsConf.quality);
+    const uint32_t negotiatedBitrate = ihsConf.maxBitrateKbps;
     const uint32_t negotiatedBurst = negotiatedBitrate * 3;
     PROTOBUF_C_SET_VALUE(clientConfig, maximum_bitrate_kbps, (int32_t) negotiatedBitrate);
     if (ihsConf.enableHevc) {
