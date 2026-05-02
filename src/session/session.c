@@ -105,11 +105,11 @@ void IHS_SessionThreadedJoin(IHS_Session *session) {
 }
 
 void IHS_SessionDestroy(IHS_Session *session) {
+    IHS_TimerDestroy(session->timers);
     for (int i = 0; i < session->numChannels; ++i) {
         IHS_SessionChannelDestroy(session->channels[i]);
     }
     IHS_HIDManagerDestroy(session->hidManager);
-    IHS_TimerDestroy(session->timers);
     IHS_RetransmissionDeinit(&session->retransmission);
     IHS_CondDestroy(session->sendQueueCond);
     IHS_MutexDestroy(session->sendQueueMutex);
