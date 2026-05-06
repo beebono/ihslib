@@ -24,7 +24,7 @@
  */
 #include "ihs_thread.h"
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 IHS_Thread *IHS_ThreadCreate(IHS_ThreadFunction *function, const char *name, void *context) {
     return (IHS_Thread *) SDL_CreateThread((SDL_ThreadFunction) function, name, context);
